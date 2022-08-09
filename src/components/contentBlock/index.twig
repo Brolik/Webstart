@@ -1,0 +1,9 @@
+{% if content is defined %}
+  {% set style = content.style %}
+  {% include '/components/' ~ style with {
+    content: content,
+    count: count,
+    isProduction: isProduction,
+    url: url
+  } only %}
+{% endif %}

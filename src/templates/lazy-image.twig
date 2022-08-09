@@ -1,0 +1,15 @@
+{% set full = { mode: 'crop', width: 2000, quality: 75 } %}
+{% set pre  = { mode: 'crop', width: 100, quality: 25 } %}
+
+{% if image is defined  %}
+  <img
+    src="{{ image.getUrl(pre) }}"
+    data-src="{{ image.getUrl(full) }}"
+    alt="{{ (alt is defined) ? alt : '' }}"
+    class="lazy {{ (class is defined) ? class : 'lazy-img' }}"
+  />
+{% else %}
+  {% if getenv('ENVIRONMENT') != 'production' %}
+    <div>Expecting `image` variable</div>
+  {% endif %}
+{% endif %}

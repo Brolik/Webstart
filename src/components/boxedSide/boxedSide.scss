@@ -1,0 +1,6 @@
+@use 'lv';
+
+
+.boxed {
+  @include lv.boxed-side() {}
+}

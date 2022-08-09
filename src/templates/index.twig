@@ -1,0 +1,42 @@
+{# A base level example template for pages. All blocks except for main
+ # are optional. You can overwrite the parent code found within ./src/layouts/index.twig
+ # by drectly adding code into the block, or prepend/append by including a {{ parent() }}
+ # call within the block.
+ #
+ # @author Kyle Jasso
+ # @date January 27th, 2021
+ #}
+
+{% extends '/layout' %}
+
+{# Imports #}
+{% import 'functions' as _fn %}
+
+{# Variables #}
+{% set pageName = 'Page Name' | toClass %}
+{% set mainAttrs = { class: pageName } %}
+
+{# Optional #}
+{% block head %}
+  {{ parent() }}
+{% endblock %}
+
+{# Optional #}
+{% block header %}
+  {{ parent() }}
+{% endblock %}
+
+{# Required #}
+{% block main %}
+  {# Change the value of file as necessary #}
+{% endblock %}
+
+{# Optional #}
+{% block footer %}
+  {{ parent() }}
+{% endblock %}
+
+{# Optional #}
+{% block resources %}
+  {{ parent() }}
+{% endblock %}

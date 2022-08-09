@@ -1,0 +1,27 @@
+{% if collection is defined and content is defined %}
+  {% import '/macros/_grid' as grid %}
+
+  {# Content is coming from a matrix. #}
+  {% if content is defined %}
+    <section class="icons">
+      <div class="icons__content icons__is-content">
+        <h2 class="icons__header">{{ content.header }}</h2>
+        <div class="icons__text">{{ content.text }}</div>
+      </div>
+
+      <div class="row centered">
+        {% for item in collection.all() %}
+          <div class="{{ (content.grid is not null) ? grid.class(content.grid) : 'col-lg-3 col-md-6 col-sm-12'}}">
+            {% include '/components/iconBlock/_iconBlock' ignore missing with {
+              content: item,
+              count: loop.index,
+              isProduction: (isProduction) ?? null,
+            } only %}
+          </div>
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
+
+  {{ craft.asyncCss.load('/css/iconBlock.css') }}
+{% endif %}

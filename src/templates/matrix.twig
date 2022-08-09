@@ -1,0 +1,13 @@
+{% if content is defined %}
+  {% for block in content.all() %}
+    {% include ('/components/' ~ block.type ~ '/') ignore missing with {
+      content: block,
+      collection: (block.blocks) ?? [],
+      count: loop.index,
+      isProduction: isProduction,
+      url: (url) ?? false
+    } only %}
+  {% endfor %}
+{% elseif not isProduction %}
+  <div>Expected <code>`with { content: entry.[matrix handle] }`</code></div>
+{% endif %}

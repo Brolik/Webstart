@@ -1,0 +1,9 @@
+{% if content is defined %}
+  {% set style = content.style %}
+  {% include '/components/' ~ style with {
+    content: content,
+    collection: (collection) ?? [],
+    isProduction: (isProduction) ?? null,
+    url: (url) ?? null
+  } only %}
+{% endif %}

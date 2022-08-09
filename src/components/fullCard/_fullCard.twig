@@ -1,0 +1,56 @@
+{% if content is defined %}
+	{% set uid = "lv-e" ~ count ~ '-' ~ content.uid|slice(30) %}
+
+  {# Values from Styilized Content #}
+  {% set default = {
+    header: (content.header) ?? null,
+    subHeader: (content.subHeader) ?? null,
+    text: (content.text) ?? null,
+    button: (content.button) ?? null,
+    image: (content.image) ?? null
+  } %}
+
+  {# Values from Card via collection #}
+  {% if content.card is defined and content.card | length %}
+    {% set card = content.card.one() %}
+
+    {% set default = {
+      header: (card.defaultHeader) ?? null,
+      subHeader: (card.defaultSubHeader) ?? null,
+      text: (card.defaultText) ?? null,
+      image: (card.defaultBackgroundImage) ?? null,
+      button: content.getUrl()
+    } %}
+  {% endif %}
+
+  <div class="full-card clickable:card">
+    <div class="full-card__media">
+      {% include '/partials/_image' ignore missing with {
+        image: default.image,
+        attributes: {
+          class: [
+            'full-card__asset',
+          ]
+        }
+      } only %}
+    </div>
+
+    <div class="full-card__container">
+      {% if default.header | length %}
+        <h3 class="boxed-side__header">{{ default.header }}</h3>
+      {% endif %}
+
+      {% if default.subHeader | length %}
+			  <h4 class="boxed-side__subHeader">{{ default.subHeader }}</h4>
+      {% endif %}
+
+      {% if default.text | length %}
+			  <div class="boxed-side__text">{{ default.text }}</div>
+      {% endif %}
+
+      {% if content.getUrl() is defined %}
+        <a href="{{ content.getUrl() }}" class="full-card__button button clickable:main">Read More</a>
+      {% endif %}
+    </div>
+  </div>
+{% endif %}

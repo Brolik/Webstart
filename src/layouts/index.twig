@@ -1,0 +1,36 @@
+{%- set isProduction = (getenv('environment') == 'production') -%}
+{%- set contact = (contactInfo.contactDetails) ?? false -%}
+{%- set address = (contactInfo.companyAddress) ?? false -%}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {% hook 'seo' %}
+
+    {# Links #}
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    {{ craft.asyncCss.load('/css/leverage.css') }}
+		{% block head %}{% endblock %}
+	</head>
+
+	<body {{- attr(bodyAttrs ?? {} ) }}>
+
+		{{ craft.asyncCss.load('/assets/css/header.css') }}
+    {% include './components/header' ignore missing %}
+
+		{{ craft.asyncCss.load('/assets/css/' ~ pageName ~'.css', false) }}
+		<main role="main" {{- attr(mainAttrs ?? {} ) }}>
+      {% block main %}{% endblock %}
+    </main>
+
+    {{ craft.asyncCss.load('/assets/css/footer.css') }}
+    {% include './components/footer' ignore missing %}
+
+    <script src="/js/app.min.js" defer async></script>
+    {% block resources %}{% endblock %}
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  </body>
+</html>

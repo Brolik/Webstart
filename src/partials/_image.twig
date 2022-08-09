@@ -1,0 +1,12 @@
+{##
+  # Expects a asset field
+  # @param image | the image field param
+  # @param class | custom class
+#}
+{% if image.one().getUrl() is defined %}
+  <img
+    {{ (attributes is defined) ? attr(attributes) }}
+    src="{{ image.one().getUrl() }}"
+    alt="{{ image.one().alt }}"
+  />
+{% endif %}

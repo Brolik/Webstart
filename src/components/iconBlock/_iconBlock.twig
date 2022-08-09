@@ -1,0 +1,40 @@
+{% if content is defined %}
+	{% set uid = "lv-e" ~ count ~ '-' ~ content.uid|slice(30) %}
+
+  {# Values from Styilized Content #}
+  {% set default = {
+    header: (content.header) ?? null,
+    subHeader: (content.subHeader) ?? null,
+    text: (content.text) ?? null,
+    button: (content.button) ?? null,
+    image: (content.image) ?? null
+  } %}
+
+  {# Values from Card via collection #}
+  {% if content.card is defined and content.card | length %}
+    {% set card = content.card.one() %}
+
+    {% set default = {
+      header: (card.defaultHeader) ?? null,
+      subHeader: (card.defaultSubHeader) ?? null,
+      text: (card.defaultText) ?? null,
+      image: (card.defaultBackgroundImage) ?? null,
+      button: content.getUrl()
+    } %}
+  {% endif %}
+
+  <div class="icon-block">
+    <div class="icon-block__media">
+     {% include '/partials/_image' ignore missing with {
+        image: default.image,
+        attributes: {
+          class: [
+            'icon-block__asset',
+          ]
+        }
+      } only %}
+    </div>
+
+    <h3 class="icon-block__header">{{ default.header }}</h3>
+  </div>
+{% endif %}

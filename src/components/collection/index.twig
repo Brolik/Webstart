@@ -1,0 +1,40 @@
+{% if content is defined %}
+  {% set style = content.style %}
+  {% set collection = [] %}
+
+  {# Null = groups | 1 = Manual #}
+  {% if content.collectionType == '1' %}
+    {% set collection = content.manualCollection %}
+    {% set url = false %}
+    {% set maxItems = content.manualCollection.all() | length %}
+    {% set f = 'man' %}
+
+  {% else %}
+    {% set collection = craft.entries.sectionId(content.sectionCollection) %}
+
+    {% set maxItems = collection.all() | length %}
+    {% set collection = collection
+      .orderBy(content.sectionOrderBy.sortBy ~ ' ' ~ content.sectionOrderBy.orderDirection)
+      .limit((content.collectionLimit == 0) ? '100' : content.collectionLimit)
+    %}
+
+    {# NOTE: If the section title doesnt match the index slug, this wont work. #}
+    {# For View all options #}
+    {% set url = "/" ~ craft.app.sections.getSectionById(content.sectionCollection).name | kebab %}
+  {% endif %}
+
+    <section class="collection">
+      <div class="collection__items">
+        {# Include the template #}
+       {% include '/components/' ~ style  ignore missing with {
+          content: content,
+          collection: collection,
+          count: count,
+          isProduction: isProduction,
+          url: url,
+          max: maxItems
+        } only %}
+      </div>
+    </section>
+{% endif %}
+

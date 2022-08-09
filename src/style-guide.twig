@@ -1,0 +1,43 @@
+{% extends '/layout' %}
+
+{# Variables #}
+{% set pageName = 'Style Guide' | toClass %}
+{% set mainAttrs = { class: pageName } %}
+
+{% block main %}
+
+  <section class="typography row">
+    <div class="typography__typefaces col-lg-6"></div>
+
+    <div class="typography__text-sizes col-lg-6">
+      <h1>Heading One</h1>
+      <h2>Heading Two</h2>
+      <h3>Heading Three</h3>
+      <h4>Heading Four</h4>
+      <h5>Heading Five</h5>
+      <h6>Heading Six</h6>
+      <p>Paragraph</p>
+      <small>Small</small>
+    </div>
+  </section>
+
+  <h1 class="title__is-content">Core Matrix</h1>
+  <section class="core-matrix">
+    {# Core Matrix #}
+    {% if entry.coreMatrix | length %}
+      {% include '/templates/matrix' with {content: entry.coreMatrix } %}
+    {% endif %}
+  </section>
+{% endblock %}
+
+{% block resources %}
+  {{ craft.asyncCss.load('css/style-guide.css') }}
+
+  <script type="text/javascript">
+    let cm = document.querySelector('.core-matrix');
+
+    cm.children.forEach((element) => {
+      console.log(element);
+    })
+  </script>
+{% endblock %}

@@ -1,0 +1,16 @@
+{##
+  # Expects a link field
+  # @param content | the link field param
+  # @param settings.customText | custom html or text for the button
+  #}
+{% if content is defined %}
+  <a{{ content.getLinkAttributes({
+    class: 'button ' ~ (settings.class) ?? ''
+  }) }}>
+    {% if settings is defined and settings.customText is defined %}
+      {{ settings.customText | raw }}
+    {% else %}
+      {{ content.getCustomText('Read More') }}
+    {% endif %}
+  </a>
+{% endif %}

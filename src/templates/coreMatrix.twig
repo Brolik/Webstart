@@ -1,0 +1,11 @@
+{% if content is defined %}
+  <section class="core" role="article">
+    {% include '/templates/matrix.twig' ignore missing with {
+      content: content,
+      isProduction: isProduction,
+      url: url
+    } only %}
+  </section>
+{% elseif not isProduction %}
+  <div>Expected <code>`with { content: entry.[matrix handle] }`</code></div>
+{% endif %}

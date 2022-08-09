@@ -1,0 +1,50 @@
+{% extends '/layouts/_layout' %}
+
+{# Variables #}
+{% set pageName = entry.title | toClass %}
+{% set mainAttrs = { class: pageName } %}
+
+{% block main %}
+ <!-- Entry has Begun -->
+  {% apply spaceless %}
+    {##
+    # Single page template builder.
+    # This template will include and build out a page
+    # based on the fields and their order with in a sections.
+    # Include paths are based upon the group that a field is
+    # in and will default to the compoennts folder.
+    # If no template is located, it will ignore the field all together.
+    ##}
+
+    {# Predefine the group names. #}
+    {% set groups = {} %}
+
+    {# Define the expected paths based off field group. #}
+    {% set paths = {
+      'default': '/components/',
+      'partials': '/partials/',
+      'templates': '/templates/',
+      'components': '/components/'
+    } %}
+
+    {# Loop through the entries fields as they exsist inside of the section. #}
+    {% for layout in entry.fieldLayout.customFields %}
+      {# Check if the field's group has already been named. #}
+      {% if groups[layout.groupId] is not defined %}
+        {% set group = craft.app.fields.getGroupById(layout.groupId) %}
+        {% set groups = groups|merge({ (layout.groupId): group.name | lower }, true) %}
+      {% endif %}
+
+      {# Determin the expected file path based off the field group. #}
+      {% set  path = (paths[groups[layout.groupId]] is defined) ? paths[groups[layout.groupId]] : paths.default %}
+
+      {# Include the necessary template into the page. #}
+      {% include path ~ layout.handle ignore missing with {
+        content: entry[layout.handle],
+        isProduction: isProduction,
+        url: entry.getUrl()
+      } only %}
+    {% endfor %}
+  {% endapply %}
+  <!-- Entry has Ended -->
+{% endblock %}

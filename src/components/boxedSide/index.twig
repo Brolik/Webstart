@@ -1,0 +1,21 @@
+{% if collection is defined and content is defined %}
+  {# Content is coming from a matrix. #}
+  {% if content is defined %}
+    <section class="boxed">
+      <div class="boxed__content boxed__is-content">
+        <h2 class="boxed__header">{{ content.header }}</h2>
+        <div class="boxed__text">{{ content.text }}</div>
+      </div>
+
+      {% for item in collection.all() %}
+        {% include '/components/boxedSide/_boxedSide' ignore missing with {
+          content: item,
+          count: loop.index,
+          isProduction: (isProduction) ?? null,
+        } only %}
+      {% endfor %}
+    </section>
+  {% endif %}
+
+  {{ craft.asyncCss.load('/css/boxedSide.css') }}
+{% endif %}

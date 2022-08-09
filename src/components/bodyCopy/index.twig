@@ -1,0 +1,33 @@
+{% if content is defined %}
+  {% set uid = "lv-e" ~ count ~ '-' ~ content.uid|slice(30) %}
+
+  {# Jumplink point #}
+  <a id="content.header | kebab"></a>
+
+  <div id="{{uid}}" class="body-copy">
+      {# Primary content #}
+    <div class="body-copy__container body-copy__is-content">
+      {% if content.header | length %}
+        {% if count == 1 %}
+          <h1 class="body-copy__header">{{ content.header }}</h1>
+        {% else %}
+          <h2 class="body-copy__header">{{ content.header }}</h2>
+        {% endif %}
+      {% endif %}
+
+      {% if content.subHeader %}
+        <h4 class="body-copy__subHeader">{{ content.subHeader }}</h4>
+      {% endif %}
+
+      {% if content.text %}
+        <div class="body-copy__text">{{ content.text }}</div>
+      {% endif %}
+
+      {% if content.button.target %}
+        {% include '/partials/_button' ignore missing with { content: content.button } only %}
+      {% endif %}
+    </div>
+  </div>
+
+  {{ craft.asyncCss.load('/css/bodyCopy.css') }}
+{% endif %}
