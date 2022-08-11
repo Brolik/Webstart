@@ -2,7 +2,7 @@
   {% for block in content.all() %}
     {% include ('/components/' ~ block.type ~ '/') ignore missing with {
       content: block,
-      collection: (block.blocks) ?? [],
+      collection: (block['blocks'] is defined) ? block.blocks : [],
       count: loop.index,
       isProduction: isProduction,
       url: (url) ?? false

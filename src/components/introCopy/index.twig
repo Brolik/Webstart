@@ -1,26 +1,12 @@
 {% if content is defined %}
   {% set uid = "lv-e" ~ count ~ '-' ~ content.uid|slice(30) %}
-  {% set backgroundColor = content.backgroundColor.color[0].background %}
-  {% set textColor = content.backgroundColor.color[0].text %}
-  {% set textHoverColor = content.backgroundColor.color[0].textHover %}
-  {% set bgClass = (content.backgroundColor.label != 'Transparent') ? 'intro-copy__angles' %}
 
   {# Jumplink point #}
   <a id="content.header | kebab"></a>
 
-  <div id="{{uid}}" class="intro-copy intro-copy--centered {{ bgClass }}">
+  <div id="{{uid}}" class="intro-copy intro-copy--centered">
     {# Primary content #}
     <div class="intro-copy__container intro-copy__is-content">
-      {# Top of copy icons #}
-      {% if content.icon is defined %}
-        {% include '/partials/_image' ignore missing with {
-          image: content.icon,
-          attributes: {
-            class: 'intro-copy__icon'
-          }
-        } only %}
-      {% endif %}
-
       {% if content.header | length %}
         {% if count == 1 %}
           <h1 class="intro-copy__header">{{ content.header }}</h1>
@@ -41,35 +27,7 @@
         {% include '/partials/_button' ignore missing with { content: content.button } only %}
       {% endif %}
     </div>
-
-    {# Image and anchor positions #}
-    {% if content.backgroundImages | length %}
-      {% for image in content.backgroundImages.all() %}
-        {% include '/partials/_image' ignore missing with {
-          image: image.backgroundImage,
-          attributes: {
-            class: [
-              'intro-copy__background',
-              'intro-copy__background--' ~ image.anchorPosition,
-            ],
-            style: {
-              'max-height': image.backgroundImage.one().height ~'px',
-              'max-width': image.backgroundImage.one().width ~ 'px'
-            }
-          }
-        } only %}
-      {% endfor %}
-    {% endif %}
   </div>
-
-  <script type="text/javascript">
-    (() => {
-      const element = document.querySelector('#{{ uid }}');
-      element.style.setProperty("--background-color", "{{ backgroundColor }}");
-      element.style.setProperty("--text-color", "{{ textColor }}");
-      element.style.setProperty("--text-hover-color", "{{ textHoverColor }}");
-    })();
-  </script>
 
   {# We're using the same styles as body copy. #}
   {{ craft.asyncCss.load('/css/bodyCopy.css') }}
